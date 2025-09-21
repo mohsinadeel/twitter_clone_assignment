@@ -64,5 +64,5 @@ php artisan key:generate
 
 ## Useful Links
 
-- **Deployed URL**: <#>
+- **Deployed URL**: <https://twitter-task.inceptionsol.com/>
 - **Repository**: <https://github.com/mohsinadeel/twitter_clone_assignment>
