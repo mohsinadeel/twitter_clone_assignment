@@ -18,4 +18,4 @@ jobs:
         username: ${{ secrets.FTPUSERNAME }}
         password: ${{ secrets.FTPPASSWORD }}
         protocol: ftps
-        server-dir: /domains/twitter-task.inceptionsol.com/public_html
+        server-dir: /domains/twitter-task.inceptionsol.com/public_html/
