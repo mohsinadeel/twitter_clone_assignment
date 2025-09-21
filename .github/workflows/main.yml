@@ -14,8 +14,8 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.6
       with:
-        server: ftp.inceptionsol.com
+        server: ${{ secrets.FTPSERVER }}
         username: ${{ secrets.FTPUSERNAME }}
         password: ${{ secrets.FTPPASSWORD }}
         protocol: ftps
-        server-dir: /domains/twitter-task.inceptionsol.com/public_html/
+        server-dir: ${{ secrets.FTPDIR }}
