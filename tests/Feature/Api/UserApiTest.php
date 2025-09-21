@@ -6,9 +6,10 @@ use App\Models\User;
 describe('User API Endpoints', function () {
     describe('GET /api/v1/users', function () {
         it('returns all users with pagination', function () {
+            $user = createAuthenticatedUser();
             User::factory()->count(5)->create();
 
-            $response = $this->getJson('/api/v1/users');
+            $response = $this->getJson('/api/v1/users', getAuthHeaders($user));
 
             $response->assertStatus(200)
                 ->assertJsonStructure([
@@ -35,9 +36,10 @@ describe('User API Endpoints', function () {
         });
 
         it('respects per_page parameter', function () {
+            $user = createAuthenticatedUser();
             User::factory()->count(10)->create();
 
-            $response = $this->getJson('/api/v1/users?per_page=3');
+            $response = $this->getJson('/api/v1/users?per_page=3', getAuthHeaders($user));
 
             $response->assertStatus(200);
             $data = $response->json('data');
@@ -46,10 +48,10 @@ describe('User API Endpoints', function () {
         });
 
         it('includes posts relationship', function () {
-            $user = User::factory()->create();
+            $user = createAuthenticatedUser();
             Post::factory()->count(2)->create(['user_id' => $user->id]);
 
-            $response = $this->getJson('/api/v1/users');
+            $response = $this->getJson('/api/v1/users', getAuthHeaders($user));
 
             $response->assertStatus(200);
             $userData = $response->json('data.data.0');
@@ -57,10 +59,11 @@ describe('User API Endpoints', function () {
         });
 
         it('orders users by created_at desc', function () {
+            $user = createAuthenticatedUser(['created_at' => now()->subDays(2)]);
             $user1 = User::factory()->create(['created_at' => now()->subDay()]);
             $user2 = User::factory()->create(['created_at' => now()]);
 
-            $response = $this->getJson('/api/v1/users');
+            $response = $this->getJson('/api/v1/users', getAuthHeaders($user));
 
             $response->assertStatus(200);
             $users = $response->json('data.data');
@@ -71,24 +74,26 @@ describe('User API Endpoints', function () {
 
     describe('GET /api/v1/users/{id}', function () {
         it('returns user by id', function () {
-            $user = User::factory()->create();
+            $user = createAuthenticatedUser();
+            $targetUser = User::factory()->create();
 
-            $response = $this->getJson("/api/v1/users/{$user->id}");
+            $response = $this->getJson("/api/v1/users/{$targetUser->id}", getAuthHeaders($user));
 
             $response->assertStatus(200)
                 ->assertJson([
                     'success' => true,
                     'data' => [
-                        'id' => $user->id,
-                        'name' => $user->name,
-                        'email' => $user->email,
-                        'username' => $user->username,
+                        'id' => $targetUser->id,
+                        'name' => $targetUser->name,
+                        'email' => $targetUser->email,
+                        'username' => $targetUser->username,
                     ],
                 ]);
         });
 
         it('returns 404 for non-existent user', function () {
-            $response = $this->getJson('/api/v1/users/999');
+            $user = createAuthenticatedUser();
+            $response = $this->getJson('/api/v1/users/999', getAuthHeaders($user));
 
             $response->assertStatus(404)
                 ->assertJson([
@@ -98,10 +103,11 @@ describe('User API Endpoints', function () {
         });
 
         it('includes posts relationship', function () {
-            $user = User::factory()->create();
-            Post::factory()->count(3)->create(['user_id' => $user->id]);
+            $user = createAuthenticatedUser();
+            $targetUser = User::factory()->create();
+            Post::factory()->count(3)->create(['user_id' => $targetUser->id]);
 
-            $response = $this->getJson("/api/v1/users/{$user->id}");
+            $response = $this->getJson("/api/v1/users/{$targetUser->id}", getAuthHeaders($user));
 
             $response->assertStatus(200);
             $userData = $response->json('data');
@@ -111,22 +117,24 @@ describe('User API Endpoints', function () {
 
     describe('GET /api/v1/users/username/{username}', function () {
         it('returns user by username', function () {
-            $user = User::factory()->create(['username' => 'testuser']);
+            $user = createAuthenticatedUser();
+            $targetUser = User::factory()->create(['username' => 'testuser']);
 
-            $response = $this->getJson('/api/v1/users/username/testuser');
+            $response = $this->getJson('/api/v1/users/username/testuser', getAuthHeaders($user));
 
             $response->assertStatus(200)
                 ->assertJson([
                     'success' => true,
                     'data' => [
-                        'id' => $user->id,
+                        'id' => $targetUser->id,
                         'username' => 'testuser',
                     ],
                 ]);
         });
 
         it('returns 404 for non-existent username', function () {
-            $response = $this->getJson('/api/v1/users/username/nonexistent');
+            $user = createAuthenticatedUser();
+            $response = $this->getJson('/api/v1/users/username/nonexistent', getAuthHeaders($user));
 
             $response->assertStatus(404)
                 ->assertJson([
@@ -136,10 +144,11 @@ describe('User API Endpoints', function () {
         });
 
         it('includes posts relationship', function () {
-            $user = User::factory()->create(['username' => 'testuser']);
-            Post::factory()->count(2)->create(['user_id' => $user->id]);
+            $user = createAuthenticatedUser();
+            $targetUser = User::factory()->create(['username' => 'testuser']);
+            Post::factory()->count(2)->create(['user_id' => $targetUser->id]);
 
-            $response = $this->getJson('/api/v1/users/username/testuser');
+            $response = $this->getJson('/api/v1/users/username/testuser', getAuthHeaders($user));
 
             $response->assertStatus(200);
             $userData = $response->json('data');

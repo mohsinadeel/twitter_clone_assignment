@@ -10,7 +10,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -26,9 +25,9 @@ class AuthController extends Controller
         $user = User::where('email', $credentials['email'])->first();
 
         if (!$user || !Hash::check($credentials['password'], $user->password)) {
-            throw ValidationException::withMessages([
+            return $this->validationErrorResponse([
                 'email' => ['The provided credentials are incorrect.'],
-            ]);
+            ], 'The provided credentials are incorrect.');
         }
 
         // Revoke all existing tokens for this user

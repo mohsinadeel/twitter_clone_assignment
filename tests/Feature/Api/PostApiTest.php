@@ -6,9 +6,10 @@ use App\Models\User;
 describe('Post API Endpoints', function () {
     describe('GET /api/v1/posts', function () {
         it('returns all posts with pagination', function () {
+            $user = createAuthenticatedUser();
             Post::factory()->count(5)->create();
 
-            $response = $this->getJson('/api/v1/posts');
+            $response = $this->getJson('/api/v1/posts', getAuthHeaders($user));
 
             $response->assertStatus(200)
                 ->assertJsonStructure([
@@ -37,9 +38,10 @@ describe('Post API Endpoints', function () {
         });
 
         it('respects per_page parameter', function () {
+            $user = createAuthenticatedUser();
             Post::factory()->count(10)->create();
 
-            $response = $this->getJson('/api/v1/posts?per_page=3');
+            $response = $this->getJson('/api/v1/posts?per_page=3', getAuthHeaders($user));
 
             $response->assertStatus(200);
             $data = $response->json('data');
@@ -48,10 +50,10 @@ describe('Post API Endpoints', function () {
         });
 
         it('includes user relationship', function () {
-            $user = User::factory()->create();
+            $user = createAuthenticatedUser();
             $post = Post::factory()->create(['user_id' => $user->id]);
 
-            $response = $this->getJson('/api/v1/posts');
+            $response = $this->getJson('/api/v1/posts', getAuthHeaders($user));
 
             $response->assertStatus(200);
             $postData = $response->json('data.data.0');
@@ -60,10 +62,11 @@ describe('Post API Endpoints', function () {
         });
 
         it('orders posts by created_at desc', function () {
+            $user = createAuthenticatedUser();
             $post1 = Post::factory()->create(['created_at' => now()->subDay()]);
             $post2 = Post::factory()->create(['created_at' => now()]);
 
-            $response = $this->getJson('/api/v1/posts');
+            $response = $this->getJson('/api/v1/posts', getAuthHeaders($user));
 
             $response->assertStatus(200);
             $posts = $response->json('data.data');
@@ -74,9 +77,10 @@ describe('Post API Endpoints', function () {
 
     describe('GET /api/v1/posts/{id}', function () {
         it('returns post by id', function () {
+            $user = createAuthenticatedUser();
             $post = Post::factory()->create();
 
-            $response = $this->getJson("/api/v1/posts/{$post->id}");
+            $response = $this->getJson("/api/v1/posts/{$post->id}", getAuthHeaders($user));
 
             $response->assertStatus(200)
                 ->assertJson([
@@ -90,7 +94,8 @@ describe('Post API Endpoints', function () {
         });
 
         it('returns 404 for non-existent post', function () {
-            $response = $this->getJson('/api/v1/posts/999');
+            $user = createAuthenticatedUser();
+            $response = $this->getJson('/api/v1/posts/999', getAuthHeaders($user));
 
             $response->assertStatus(404)
                 ->assertJson([
@@ -100,10 +105,10 @@ describe('Post API Endpoints', function () {
         });
 
         it('includes user relationship', function () {
-            $user = User::factory()->create();
+            $user = createAuthenticatedUser();
             $post = Post::factory()->create(['user_id' => $user->id]);
 
-            $response = $this->getJson("/api/v1/posts/{$post->id}");
+            $response = $this->getJson("/api/v1/posts/{$post->id}", getAuthHeaders($user));
 
             $response->assertStatus(200);
             $postData = $response->json('data');
@@ -113,11 +118,11 @@ describe('Post API Endpoints', function () {
 
     describe('GET /api/v1/users/{userId}/posts', function () {
         it('returns posts for specific user', function () {
-            $user = User::factory()->create();
+            $user = createAuthenticatedUser();
             Post::factory()->count(3)->create(['user_id' => $user->id]);
             Post::factory()->count(2)->create(); // Other user's posts
 
-            $response = $this->getJson("/api/v1/users/{$user->id}/posts");
+            $response = $this->getJson("/api/v1/users/{$user->id}/posts", getAuthHeaders($user));
 
             $response->assertStatus(200);
             $posts = $response->json('data.data');
@@ -126,10 +131,10 @@ describe('Post API Endpoints', function () {
         });
 
         it('respects per_page parameter', function () {
-            $user = User::factory()->create();
+            $user = createAuthenticatedUser();
             Post::factory()->count(10)->create(['user_id' => $user->id]);
 
-            $response = $this->getJson("/api/v1/users/{$user->id}/posts?per_page=3");
+            $response = $this->getJson("/api/v1/users/{$user->id}/posts?per_page=3", getAuthHeaders($user));
 
             $response->assertStatus(200);
             $data = $response->json('data');
@@ -138,10 +143,10 @@ describe('Post API Endpoints', function () {
         });
 
         it('includes user relationship', function () {
-            $user = User::factory()->create();
+            $user = createAuthenticatedUser();
             $post = Post::factory()->create(['user_id' => $user->id]);
 
-            $response = $this->getJson("/api/v1/users/{$user->id}/posts");
+            $response = $this->getJson("/api/v1/users/{$user->id}/posts", getAuthHeaders($user));
 
             $response->assertStatus(200);
             $postData = $response->json('data.data.0');
@@ -149,11 +154,11 @@ describe('Post API Endpoints', function () {
         });
 
         it('orders posts by created_at desc', function () {
-            $user = User::factory()->create();
+            $user = createAuthenticatedUser();
             $post1 = Post::factory()->create(['user_id' => $user->id, 'created_at' => now()->subDay()]);
             $post2 = Post::factory()->create(['user_id' => $user->id, 'created_at' => now()]);
 
-            $response = $this->getJson("/api/v1/users/{$user->id}/posts");
+            $response = $this->getJson("/api/v1/users/{$user->id}/posts", getAuthHeaders($user));
 
             $response->assertStatus(200);
             $posts = $response->json('data.data');

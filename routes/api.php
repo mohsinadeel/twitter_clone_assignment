@@ -31,32 +31,23 @@ Route::middleware('auth:sanctum')->group(function () {
 // API v1 routes
 Route::prefix('v1')->group(function () {
 
-    // Users group
-    Route::prefix('users')->name('users.')->group(function () {
-        // Public user routes - specific routes first
+    // Users group - all routes require authentication
+    Route::prefix('users')->name('users.')->middleware('auth:sanctum')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/username/{username}', [UserController::class, 'showByUsername'])->name('showByUsername');
         Route::get('/{userId}/posts', [PostController::class, 'getByUserId'])->where('userId', '[0-9]+')->name('posts');
         Route::get('/{id}', [UserController::class, 'show'])->name('show');
-
-        // Protected user routes
-        Route::middleware('auth:sanctum')->group(function () {
-            Route::put('/{id}', [UserController::class, 'update'])->where('id', '[0-9]+')->name('update');
-            Route::delete('/{id}', [UserController::class, 'destroy'])->where('id', '[0-9]+')->name('destroy');
-        });
+        Route::put('/{id}', [UserController::class, 'update'])->where('id', '[0-9]+')->name('update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->where('id', '[0-9]+')->name('destroy');
     });
 
-    // Posts group
-    Route::prefix('posts')->name('posts.')->group(function () {
-        // Public post routes
+    // Posts group - all routes require authentication
+    Route::prefix('posts')->name('posts.')->middleware('auth:sanctum')->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('index');
         Route::get('/{id}', [PostController::class, 'show'])->where('id', '[0-9]+')->name('show');
-
-        // Protected post routes
-        Route::middleware('auth:sanctum')->group(function () {
-            Route::post('/', [PostController::class, 'store'])->name('store');
-            Route::put('/{id}', [PostController::class, 'update'])->where('id', '[0-9]+')->name('update');
-            Route::delete('/{id}', [PostController::class, 'destroy'])->where('id', '[0-9]+')->name('destroy');
-        });
+        Route::post('/', [PostController::class, 'store'])->name('store');
+        Route::put('/{id}', [PostController::class, 'update'])->where('id', '[0-9]+')->name('update');
+        Route::delete('/{id}', [PostController::class, 'destroy'])->where('id', '[0-9]+')->name('destroy');
     });
 });
+

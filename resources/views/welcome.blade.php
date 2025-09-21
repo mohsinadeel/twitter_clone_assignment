@@ -56,7 +56,7 @@
                 <!-- Header Section -->
                 <div class="text-center mb-12">
                     <h1 class="text-4xl lg:text-5xl font-bold text-[#1b1b18] dark:text-[#EDEDEC] mb-4">
-                        Twitter Mini Assignment
+                        {{ config('app.name') }}
                     </h1>
                     <p class="text-lg text-[#706f6c] dark:text-[#A1A09A] max-w-2xl mx-auto">
                         A simplified Twitter/X clone built with <strong>Laravel 12</strong>, <strong>MySQL</strong>, and <strong>Laravel Sanctum</strong>.
