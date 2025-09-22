@@ -12,8 +12,7 @@ A simplified Twitter/X clone built with **Laravel 12**, **MySQL**, and **Laravel
 - Create new posts
 - RESTful API with consistent response format
 - MySQL migrations & seeders
-- Swagger/OpenAPI documentation (TBD)
-- Tested with Pest (unit + feature tests)
+- Tested with Pest (feature tests)
 
 ---
 
@@ -25,7 +24,6 @@ A simplified Twitter/X clone built with **Laravel 12**, **MySQL**, and **Laravel
 - **Database:** MySQL (via Laravel migrations/seeders)
 - **Testing:** Pest
 - **Containerization:** Laravel Sail (Docker)
-- **Docs:** Swagger (via `darkaonline/l5-swagger` package) (TBD)
 
 ## GIT Clone and Installation
 
@@ -64,5 +62,5 @@ php artisan key:generate
 
 ## Useful Links
 
-- **Deployed URL**: <https://twitter-task.inceptionsol.com/>
+- **Deployed URL**: <https://mohsin-twitter.inceptionsol.com/>
 - **Repository**: <https://github.com/mohsinadeel/twitter_clone_assignment>
