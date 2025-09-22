@@ -93,11 +93,15 @@
                         </div>
                         <div class="flex items-start space-x-3">
                             <div class="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                            <span class="text-[#1b1b18] dark:text-[#EDEDEC]">Swagger/OpenAPI documentation (TBD)</span>
+                            <span class="text-[#1b1b18] dark:text-[#EDEDEC]">Swagger/OpenAPI documentation (TBD - Not implemented)</span>
                         </div>
                         <div class="flex items-start space-x-3">
                             <div class="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                            <span class="text-[#1b1b18] dark:text-[#EDEDEC]">Tested with Pest (unit + feature tests)</span>
+                            <span class="text-[#1b1b18] dark:text-[#EDEDEC]">Tested with Pest (feature tests)<br>(unit tests not added)</span>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <span class="text-[#1b1b18] dark:text-[#EDEDEC]">Github Action to deploy to personal server via FTP</span>
                         </div>
                     </div>
                 </div>
@@ -137,7 +141,7 @@
                             <div class="flex items-center space-x-3">
                                 <div class="w-3 h-3 bg-indigo-500 rounded-full"></div>
                                 <span class="font-semibold text-[#1b1b18] dark:text-[#EDEDEC]">Containerization:</span>
-                                <span class="text-[#706f6c] dark:text-[#A1A09A]">Laravel Sail (Docker)</span>
+                                <span class="text-[#706f6c] dark:text-[#A1A09A]">Laravel Sail (Docker) - for Local Development</span>
                             </div>
                         </div>
                     </div>
