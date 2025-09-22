@@ -13,6 +13,7 @@ A simplified Twitter/X clone built with **Laravel 12**, **MySQL**, and **Laravel
 - RESTful API with consistent response format
 - MySQL migrations & seeders
 - Tested with Pest (feature tests)
+- Github Action to deploy to personal server via FTP
 
 ---
 
