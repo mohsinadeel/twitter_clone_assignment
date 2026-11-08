@@ -49,7 +49,7 @@
             @endauth
 
             <div class="flex items-center space-x-4">
-                <a href="{{ rtrim(config('services.portal_url'), '/').'/feedback?demo=twitter' }}" class="text-sm font-medium text-gray-700 hover:text-gray-900 underline underline-offset-4">Suggest a feature</a>
+                <a href="{{ rtrim(config('services.portal_url'), '/').'/feedback?demo=twitter' }}" class="text-sm font-medium text-gray-700 hover:text-gray-900 underline underline-offset-4">Send feedback</a>
                 @auth
                     <!-- User Dropdown Menu -->
                     <div class="relative" x-data="{ open: false, mobileMenuOpen: false }">
