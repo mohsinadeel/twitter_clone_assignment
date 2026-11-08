@@ -1,5 +1,5 @@
 var Users = (function (Users) {
-    const API_BASE = '/api/v1';
+    const API_BASE = document.querySelector('meta[name="demo-api-base"]').content;
     const USER_ID = window.userId || 1;
 
     Users.loadProfile = function(userId = USER_ID) {
@@ -28,8 +28,8 @@ var Users = (function (Users) {
                             <div class="avatar">
                                 <img src="https://via.placeholder.com/100x100/1da1f2/ffffff?text=${(user.name || user.username || 'U').charAt(0).toUpperCase()}" alt="Profile Picture">
                             </div>
-                            <div class="user-name">${user.name || 'N/A'}</div>
-                            <div class="user-username">@${user.username || user.email || 'N/A'}</div>
+                            <div class="user-name">${window.Utils.escapeHtml(user.name || 'N/A')}</div>
+                            <div class="user-username">@${window.Utils.escapeHtml(user.username || user.email || 'N/A')}</div>
                         </div>
                     `;
                 }
@@ -40,15 +40,15 @@ var Users = (function (Users) {
                         <div class="profile-grid">
                             <div class="profile-field">
                                 <label>Name:</label>
-                                <div class="value">${user.name || 'N/A'}</div>
+                                <div class="value">${window.Utils.escapeHtml(user.name || 'N/A')}</div>
                             </div>
                             <div class="profile-field">
                                 <label>Username:</label>
-                                <div class="value">${user.username || user.email || 'N/A'}</div>
+                                <div class="value">${window.Utils.escapeHtml(user.username || user.email || 'N/A')}</div>
                             </div>
                             <div class="profile-field">
                                 <label>Email:</label>
-                                <div class="value">${user.email || 'N/A'}</div>
+                                <div class="value">${window.Utils.escapeHtml(user.email || 'N/A')}</div>
                             </div>
                             <div class="profile-field">
                                 <label>Posts:</label>
@@ -71,7 +71,7 @@ var Users = (function (Users) {
     };
 
     Users.canDeletePost = function(post) {
-        return post.user_id === USER_ID || window.isAdmin || false;
+        return post.user_id === USER_ID;
     };
 
     return Users;

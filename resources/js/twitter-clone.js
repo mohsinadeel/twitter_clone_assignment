@@ -1,4 +1,4 @@
-const API_BASE = '/api/v1';
+const API_BASE = document.querySelector('meta[name="demo-api-base"]').content;
 const USER_ID = window.userId || 1;
 
 document.addEventListener('DOMContentLoaded', function() {

@@ -4,6 +4,7 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
+    <p class="px-4 text-sm text-gray-600">Your name and password belong to your shared Engineering Demos account. Changes here also affect sign-in to the portal and other demos. Account deletion and two-factor authentication are managed in the main portal.</p>
         <div class="px-4 py-6 sm:px-0">
             <div class="bg-white overflow-hidden shadow rounded-lg">
                 <div class="px-4 py-5 sm:p-6">

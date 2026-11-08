@@ -1,5 +1,5 @@
 var Posts = (function (Posts) {
-    const API_BASE = '/api/v1';
+    const API_BASE = document.querySelector('meta[name="demo-api-base"]').content;
     const USER_ID = window.userId || 1;
 
     Posts.loadPosts = function(userId = null, page = 1) {
@@ -37,18 +37,18 @@ var Posts = (function (Posts) {
             }
 
             postsElement.innerHTML = posts.map(post => {
-                const canDelete = (window.Users && Users.canDeletePost) ? Users.canDeletePost(post) : (post.user_id === USER_ID || window.isAdmin || false);
+                const canDelete = (window.Users && Users.canDeletePost) ? Users.canDeletePost(post) : (post.user_id === USER_ID);
                 const formattedDate = (window.Utils && Utils.formatDate) ? Utils.formatDate(post.created_at) : new Date(post.created_at).toLocaleDateString();
                 const deleteButton = canDelete ? `<button class="delete-btn" onclick="Posts.deletePost(${post.id})">Delete</button>` : '';
 
                 return `
                     <li class="post-item">
                         <div class="post-header">
-                            <div class="post-author">${post.user.name}</div>
-                            <div class="post-username">@${post.user.username || post.user.email}</div>
+                            <div class="post-author">${window.Utils.escapeHtml(post.user.name)}</div>
+                            <div class="post-username">@${window.Utils.escapeHtml(post.user.username || post.user.email)}</div>
                             <div class="post-time">${formattedDate}</div>
                         </div>
-                        <div class="post-content">${post.content}</div>
+                        <div class="post-content">${window.Utils.escapeHtml(post.content)}</div>
                         ${deleteButton}
                     </li>
                 `;

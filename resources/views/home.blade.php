@@ -36,7 +36,6 @@
 @push('scripts')
     <script>
         window.userId = {{ Auth::id() ?? 'null' }};
-        window.isAdmin = {{ Auth::check() && Auth::user()->is_admin ? 'true' : 'false' }};
         window.csrfToken = '{{ csrf_token() }}';
     </script>
     @vite(['resources/js/app.js'])

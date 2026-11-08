@@ -1,15 +1,21 @@
 var Utils = (function (Utils) {
+    Utils.escapeHtml = function(value) {
+        return String(value ?? '').replace(/[&<>"']/g, char => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[char]);
+    };
+
     Utils.showLoading = function(elementId, message = 'Loading...') {
         const element = document.getElementById(elementId);
         if (element) {
-            element.innerHTML = `<div class="loading">${message}</div>`;
+            element.innerHTML = `<div class="loading">${Utils.escapeHtml(message)}</div>`;
         }
     };
 
     Utils.showError = function(elementId, message = 'An error occurred') {
         const element = document.getElementById(elementId);
         if (element) {
-            element.innerHTML = `<div class="error">${message}</div>`;
+            element.innerHTML = `<div class="error">${Utils.escapeHtml(message)}</div>`;
         }
     };
 

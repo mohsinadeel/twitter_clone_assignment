@@ -2,6 +2,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-row flex-wrap items-center justify-between space-x-6">
             <h3 class="text-lg font-semibold text-gray-900">Mohsin Adeel</h3>
+            <a href="{{ config('services.portal_url') }}" class="text-blue-600 hover:text-gray-800 transition-colors duration-200">Engineering demos</a>
             <a href="mailto:mohsinadeel@gmail.com" class="text-blue-600 hover:text-gray-800 transition-colors duration-200">mohsinadeel@gmail.com</a>
             <a href="https://www.linkedin.com/in/mohsinadeel/" target="_blank" rel="noopener noreferrer"
                class="text-blue-600 hover:text-gray-800 transition-colors duration-200 inline-flex items-center">

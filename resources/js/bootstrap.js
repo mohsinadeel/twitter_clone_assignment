@@ -6,7 +6,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.withCredentials = true;
 
 // Initialize CSRF token for Sanctum
-axios.get('/sanctum/csrf-cookie').then(() => {
+axios.get(document.querySelector('meta[name="demo-csrf-url"]').content).then(() => {
     console.log('CSRF token initialized for Sanctum');
 }).catch(error => {
     console.warn('Failed to initialize CSRF token:', error);
@@ -70,4 +70,3 @@ window.axios.interceptors.response.use(
         return Promise.reject(error);
     }
 );
-
