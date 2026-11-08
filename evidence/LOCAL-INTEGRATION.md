@@ -1,8 +1,17 @@
 # Local shared-host integration evidence
 
 Date: 8 November 2026 (Asia/Karachi).
-Twitter baseline: `ba52e05`; portal baseline: `f124b38`. Evidence refers to uncommitted local adaptation changes, not the baseline commits alone. Nothing from this integration has been pushed, deployed or configured in GitHub environments.
+Twitter baseline: `ba52e05`; portal baseline: `f124b38`. Historical local evidence refers to the adaptation work before publication; the hosted update below records deployed commits and actual server checks.
 
+## Hosted verification — 8 November 2026
+
+This section supersedes historical local-only statements below. Mohsin explicitly authorised code pushes and deployment.
+
+- Deployed application commit: `846e816` (integration/workflows `3d98c22` plus SSH-key CRLF normalisation). Manual deployment succeeded: https://github.com/mohsinadeel/twitter_clone_assignment/actions/runs/42511047998 . Main deployed first to provide shared username/avatar columns. Shared database/environment files were backed up before deployment.
+- Target: https://demo.mohsinadeel.dev/twitter-clone-demo/ . Independent twitter_ tables and migration ledger were created by normal migrations; users remained Main-owned. The symlink serves only the demo public directory.
+- Real HTTP check: registered a unique synthetic account through Main, signed into Stripe and Twitter in separate cookie jars with those credentials, loaded Twitter home and application-owned assets (200), created a post through /api/v1/posts (201), retrieved it in the feed (200) and deleted it (200). No Stripe Checkout/payment or webhook configuration action occurred.
+- Three exact temporary synthetic accounts from smoke-check iterations were removed through Main after confirming no Stripe customer/admin/two-factor state or remaining posts. Test credentials were random and not printed. No production user fixture was seeded.
+- Local pre-deployment rerun: 80 PHP tests / 297 assertions, 3 Node rendering tests and asset build passed. Deployment Composer/npm audit gate passed. The original local Dockerfile rebuild/manual CI, old-host data import, two-factor federation and live Stripe payment processing were not part of this verification. Existing CDN UI dependencies remain; app asset checks excluded those and hosting-injected analytics.
 ## Approved dependency updates — latest verification
 
 Mohsin explicitly approved compatible dependency patches on 8 November 2026. Both composer.json and package.json are unchanged when parsed as JSON compared with their baseline versions; no direct package or declared version range was added/changed. Composer and npm regenerated their lockfiles within those constraints. Selected versions: Laravel 12.29.0 -> 12.71.0; Fortify 1.30.0 -> 1.41.0; Sanctum 4.2.0 -> 4.3.3; Pest 4.1.0 -> 4.7.8; Axios 1.12.2 -> 1.21.0; Vite 7.1.5 -> 7.3.7; Tailwind 4.1.13 -> 4.3.5. Transitive packages also changed as required by the existing constraints; no root manifest range was widened.
