@@ -24,13 +24,17 @@ class AuthController extends Controller
 
         $user = User::where('email', $credentials['email'])->first();
 
-        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
             return $this->validationErrorResponse([
                 'email' => ['The provided credentials are incorrect.'],
             ], 'The provided credentials are incorrect.');
         }
 
-        // Revoke all existing tokens for this user
+        if ($user->two_factor_secret) {
+            return $this->errorResponse('Twitter API sign-in is unavailable for accounts using two-factor authentication in the main portal.', 403);
+        }
+
+        // Revoke only this demo's existing tokens for this user
         $user->tokens()->delete();
 
         // Create new token

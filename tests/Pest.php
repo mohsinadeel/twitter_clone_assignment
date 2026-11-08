@@ -1,7 +1,10 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,15 +16,15 @@ use Illuminate\Foundation\Testing\WithFaker;
 */
 
 // Global traits for all tests
-uses(RefreshDatabase::class, WithFaker::class);
+uses(DatabaseTransactions::class, WithFaker::class);
 
 // Feature tests configuration
-pest()->extend(Tests\TestCase::class)
-    ->use(RefreshDatabase::class, WithFaker::class)
+pest()->extend(TestCase::class)
+    ->use(DatabaseTransactions::class, WithFaker::class)
     ->in('Feature');
 
 // Unit tests configuration
-pest()->extend(Tests\TestCase::class)
+pest()->extend(TestCase::class)
     ->in('Unit');
 
 /*
@@ -63,25 +66,27 @@ expect()->extend('toBeForbidden', function () {
 |
 */
 
-function createUser(array $attributes = []): \App\Models\User
+function createUser(array $attributes = []): User
 {
-    return \App\Models\User::factory()->create($attributes);
+    return User::factory()->create($attributes);
 }
 
-function createPost(array $attributes = []): \App\Models\Post
+function createPost(array $attributes = []): Post
 {
-    return \App\Models\Post::factory()->create($attributes);
+    return Post::factory()->create($attributes);
 }
 
-function createAuthenticatedUser(array $attributes = []): \App\Models\User
+function createAuthenticatedUser(array $attributes = []): User
 {
     $user = createUser($attributes);
     $user->createToken('test-token');
+
     return $user;
 }
 
-function getAuthHeaders(\App\Models\User $user): array
+function getAuthHeaders(User $user): array
 {
     $token = $user->createToken('test-token')->plainTextToken;
-    return ['Authorization' => 'Bearer ' . $token];
+
+    return ['Authorization' => 'Bearer '.$token];
 }

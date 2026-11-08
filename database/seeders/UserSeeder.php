@@ -4,23 +4,18 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Create a test user
-        User::factory()->create([
-            'name' => 'Mohsin Adeel',
-            'email' => 'mohsinadeel@gmail.com',
-            'username' => 'mohsinadeel',
-            'password' => bcrypt('Mohsin@123'),
+        if (! app()->environment(['local', 'testing'])
+            || ! in_array(DB::connection('shared_users')->getDatabaseName(), ['testing', 'twitter_clone_assignment'], true)) {
+            throw new \RuntimeException('Synthetic Twitter accounts may only be seeded locally.');
+        }
+        User::firstOrCreate(['email' => 'twitter-demo@example.test'], [
+            'name' => 'Twitter Demo', 'username' => 'twitter_demo', 'password' => 'password',
         ]);
-
-        // Create additional users
-        User::factory(5)->create();
     }
 }

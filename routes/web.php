@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,7 +13,7 @@ Route::get('/sanctum/csrf-cookie', function () {
 });
 
 // Authentication routes (handled by Fortify)
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'shared-account'])->group(function () {
     Route::get('/home', [ProfileController::class, 'index'])->name('home');
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/settings', [ProfileController::class, 'settings'])->name('settings.show');

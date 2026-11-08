@@ -262,18 +262,15 @@ describe('User API Endpoints', function () {
     });
 
     describe('DELETE /api/v1/users/{id}', function () {
-        it('deletes user', function () {
+        it('refuses deletion of a shared account', function () {
             $user = createAuthenticatedUser();
 
             $response = $this->deleteJson("/api/v1/users/{$user->id}", [], getAuthHeaders($user));
 
-            $response->assertStatus(200)
-                ->assertJson([
-                    'success' => true,
-                    'message' => 'User deleted successfully',
-                ]);
+            $response->assertStatus(403)
+                ->assertJson(['success' => false, 'message' => 'Shared accounts must be managed in the main portal.']);
 
-            expect(User::find($user->id))->toBeNull();
+            expect(User::find($user->id))->not->toBeNull();
         });
 
         it('returns 404 for non-existent user', function () {
@@ -288,14 +285,14 @@ describe('User API Endpoints', function () {
                 ]);
         });
 
-        it('cascades delete to user posts', function () {
+        it('preserves posts when shared account deletion is refused', function () {
             $user = createAuthenticatedUser();
             $post = Post::factory()->create(['user_id' => $user->id]);
 
             $response = $this->deleteJson("/api/v1/users/{$user->id}", [], getAuthHeaders($user));
 
-            $response->assertStatus(200);
-            expect(Post::find($post->id))->toBeNull();
+            $response->assertStatus(403);
+            expect(Post::find($post->id))->not->toBeNull();
         });
     });
 });

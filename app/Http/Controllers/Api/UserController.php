@@ -36,7 +36,7 @@ class UserController extends Controller
     {
         $user = $this->userRepository->findById($id);
 
-        if (!$user) {
+        if (! $user) {
             return $this->notFoundResponse('User not found');
         }
 
@@ -50,7 +50,7 @@ class UserController extends Controller
     {
         $user = $this->userRepository->findByUsername($username);
 
-        if (!$user) {
+        if (! $user) {
             return $this->notFoundResponse('User not found');
         }
 
@@ -64,21 +64,21 @@ class UserController extends Controller
     {
         $user = $this->userRepository->findById($id);
 
-        if (!$user) {
+        if (! $user) {
             return $this->notFoundResponse('User not found');
         }
 
         $authenticatedUser = $this->getAuthenticatedUser($request);
 
         // Check if the user is updating their own profile
-        if (!$this->userOwnsResource($user, $authenticatedUser->id)) {
+        if (! $this->userOwnsResource($user, $authenticatedUser->id)) {
             return $this->errorResponse('Unauthorized to update this user', 403);
         }
 
         $data = $request->validated();
         $updated = $this->userRepository->update($id, $data);
 
-        if (!$updated) {
+        if (! $updated) {
             return $this->errorResponse('Failed to update user', 500);
         }
 
@@ -94,23 +94,17 @@ class UserController extends Controller
     {
         $user = $this->userRepository->findById($id);
 
-        if (!$user) {
+        if (! $user) {
             return $this->notFoundResponse('User not found');
         }
 
         $authenticatedUser = $this->getAuthenticatedUser($request);
 
         // Check if the user is deleting their own profile
-        if (!$this->userOwnsResource($user, $authenticatedUser->id)) {
+        if (! $this->userOwnsResource($user, $authenticatedUser->id)) {
             return $this->errorResponse('Unauthorized to delete this user', 403);
         }
 
-        $deleted = $this->userRepository->delete($id);
-
-        if (!$deleted) {
-            return $this->errorResponse('Failed to delete user', 500);
-        }
-
-        return $this->successResponse(null, 'User deleted successfully');
+        return $this->errorResponse('Shared accounts must be managed in the main portal.', 403);
     }
 }

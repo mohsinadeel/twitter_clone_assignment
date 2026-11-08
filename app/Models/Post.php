@@ -10,6 +10,8 @@ class Post extends Model
 {
     use HasFactory;
 
+    protected $connection = 'mysql';
+
     /**
      * The attributes that are mass assignable.
      *

@@ -3,16 +3,17 @@
 use App\Models\Post;
 use App\Models\User;
 use App\Traits\HandlesApiAuthentication;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-uses(RefreshDatabase::class);
+uses(DatabaseTransactions::class);
 
 describe('HandlesApiAuthentication Trait', function () {
     beforeEach(function () {
         // Create a test controller that uses the HandlesApiAuthentication trait
-        $this->controller = new class extends Controller {
+        $this->controller = new class extends Controller
+        {
             use HandlesApiAuthentication;
 
             // Make protected methods public for testing
@@ -32,7 +33,7 @@ describe('HandlesApiAuthentication Trait', function () {
 
             public function authorizeUserAction($resource, $userId, string $action = 'access'): bool
             {
-                if (!$this->userOwnsResource($resource, $userId)) {
+                if (! $this->userOwnsResource($resource, $userId)) {
                     return false;
                 }
 
